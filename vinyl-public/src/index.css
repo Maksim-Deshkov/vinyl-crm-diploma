@@ -1,0 +1,113 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: #f9f9f9;
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+  color: #007acc;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+h1, h2, h3 {
+  color: #333;
+}
+
+nav {
+  background: #007acc;
+  padding: 1rem;
+}
+
+nav a {
+  color: #fff;
+  margin-right: 1rem;
+}
+
+nav a:hover {
+  color: #ffdd57;
+}
+
+main {
+  padding: 1rem;
+}
+
+button {
+  background: #007acc;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 0.2rem 0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background: #005f99;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  margin-top: 1rem;
+}
+
+th, td {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+}
+
+th {
+  background: #007acc;
+  color: #fff;
+}
+
+.cart-item, .vinyl-card {
+  background: #fff;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.vinyl-card img {
+  max-width: 100%;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.vinyl-card {
+  width: 200px;
+}
+
+.vinyl-catalog {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  nav {
+    display: block;
+  }
+  .vinyl-card {
+    width: 100%;
+  }
+}
