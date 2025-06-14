@@ -1,0 +1,17 @@
+vinyl-public/node_modules/
+vinyl-public/build/
+vinyl-public/coverage/
+
+vinyl-crm/node_modules/
+vinyl-crm/build/
+vinyl-crm/coverage/
+
+# env files
+vinyl-public/.env*
+vinyl-crm/.env*
+
+# misc
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
