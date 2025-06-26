@@ -1,181 +1,157 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState, useMemo } from 'react';
+import api from '../services/api';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
-  const [filter, setFilter] = useState('');
-  const [sort, setSort] = useState('');
+  const [filters, setFilters] = useState({ status: 'All', search: '' });
+  const fixedStatusOptions = ['НОВЕ', 'В ОБРОБЦІ', 'ВІДПРАВЛЕНО', 'ВИКОНАНО', 'ВІДХИЛЕНО'];
 
   useEffect(() => {
     loadOrders();
   }, []);
 
   const loadOrders = () => {
-    axios.get('http://localhost:3001/orders')
+    api.get('/orders/with-vinyls')
       .then(res => setOrders(res.data))
       .catch(err => console.error('Помилка завантаження замовлень:', err));
   };
 
-  const updateStatus = async (id, newStatus) => {
-    try {
-      const response = await axios.patch(`http://localhost:3001/orders/${id}`, {
-        status: newStatus
-      });
-      console.log('Відповідь від сервера:', response.data);
-      setOrders(prevOrders =>
-        prevOrders.map(order =>
-          order.id === id ? { ...order, status: newStatus } : order
-        )
-      );
-    } catch (error) {
-      console.error('Помилка зміни статусу:', error.response ? error.response.data : error);
-      alert('Не вдалося змінити статус замовлення.');
-    }
+  const updateStatus = (id, status, byRole = 'manager') => {
+    api.patch(`/orders/${id}`, { status, byRole })
+      .then(() => loadOrders())
+      .catch(err => console.error('Помилка оновлення статусу:', err));
   };
 
-  const addComment = async (orderId, commentText) => {
-    try {
-      const order = orders.find(o => o.id === orderId);
-      const newComment = {
-        id: Date.now(),
-        text: commentText,
-        author: 'менеджер1'
-      };
-      const updatedComments = [...(order.comments || []), newComment];
-
-      await axios.patch(`http://localhost:3001/orders/${orderId}`, {
-        comments: updatedComments
-      });
-
-      setOrders(prevOrders =>
-        prevOrders.map(o =>
-          o.id === orderId ? { ...o, comments: updatedComments } : o
-        )
-      );
-    } catch (err) {
-      console.error('Помилка додавання коментаря:', err);
-      alert('Не вдалося додати коментар');
-    }
+  const reopenOrder = (id) => {
+    api.patch(`/orders/${id}/reopen`, { byRole: 'admin' })
+      .then(() => loadOrders())
+      .catch(err => console.error('Помилка відкриття замовлення:', err));
   };
 
-  const updateNote = async (id, newNote) => {
-    try {
-      await axios.patch(`http://localhost:3001/orders/${id}`, { note: newNote });
-      setOrders(prevOrders =>
-        prevOrders.map(o =>
-          o.id === id ? { ...o, note: newNote } : o
-        )
-      );
-    } catch (err) {
-      console.error('Помилка оновлення нотатки:', err);
-    }
-  };
+  const statusOptions = useMemo(() => ['All', ...fixedStatusOptions], []);
 
-  // Фільтрація
-  let filteredOrders = filter
-    ? orders.filter(o => o.status === filter)
-    : orders;
-
-  // Сортування
-  if (sort === 'asc') {
-    filteredOrders = [...filteredOrders].sort((a, b) => a.total - b.total);
-  } else if (sort === 'desc') {
-    filteredOrders = [...filteredOrders].sort((a, b) => b.total - a.total);
-  }
+  const filtered = useMemo(() => {
+    const term = filters.search.trim().toLowerCase();
+    return orders.filter(o => {
+      if (filters.status !== 'All' && o.status !== filters.status) return false;
+      if (term) {
+        const { name = '', phone = '', email = '' } = o.userInfo || {};
+        const hay = [o._id, name, phone, email].join(' ').toLowerCase();
+        if (!hay.includes(term)) return false;
+      }
+      return true;
+    });
+  }, [orders, filters]);
 
   return (
-    <div>
+    <div className="orders-page">
       <h2>Список замовлень</h2>
 
-      <div style={{ marginBottom: '1rem' }}>
-        <label>Фільтр за статусом: </label>
-        <select value={filter} onChange={e => setFilter(e.target.value)}>
-          <option value="">Всі</option>
-          <option value="Нове">Нове</option>
-          <option value="У процесі">У процесі</option>
-          <option value="Відправлено">Відправлено</option>
-          <option value="Закрито">Закрито</option>
-        </select>
+      <div className="orders-filters">
+        <div className="filter">
+          <label>Статус:</label>
+          <select
+            value={filters.status}
+            onChange={e => setFilters(f => ({ ...f, status: e.target.value }))}
+          >
+            {statusOptions.map(s => (
+              <option key={s} value={s}>{s === 'All' ? 'Всі' : s}</option>
+            ))}
+          </select>
+        </div>
 
-        <label style={{ marginLeft: '1rem' }}>Сортувати за сумою: </label>
-        <select value={sort} onChange={e => setSort(e.target.value)}>
-          <option value="">---</option>
-          <option value="asc">Зростання</option>
-          <option value="desc">Спадання</option>
-        </select>
+        <div className="filter">
+          <label>Пошук:</label>
+          <input
+            type="text"
+            placeholder="ID / ПІБ / Телефон / Email"
+            value={filters.search}
+            onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
+          />
+        </div>
       </div>
 
-      {filteredOrders.length > 0 ? (
-        <table border="1" cellPadding="5" width="100%">
-          <thead>
+      <table className="orders-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Платівки</th>
+            <th>Статус</th>
+            <th>Контакти замовника</th>
+            <th>Дії</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filtered.map(o => {
+            const {
+              _id,
+              vinylInfos = [],
+              status,
+              isClosed,
+              address = '—',
+              userInfo = {}
+            } = o;
+
+            const {
+              name = '—',
+              phone = '—',
+              email = '—'
+            } = userInfo;
+
+            let rowStyle = {};
+            if (status === 'ВИКОНАНО') {
+              rowStyle = { background: '#d4edda' };
+            } else if (status === 'ВІДХИЛЕНО') {
+              rowStyle = { background: '#f8d7da' };
+            }
+
+            return (
+              <tr key={_id} style={rowStyle}>
+                <td>{_id}</td>
+                <td>
+                  {vinylInfos.length
+                    ? vinylInfos.map(v => `${v.title} — ${v.artist} (${v.count} шт.)`).join(', ')
+                    : 'Невідомо'}
+                </td>
+                <td>
+                  <select
+                    value={status}
+                    disabled={isClosed}
+                    onChange={e => updateStatus(_id, e.target.value)}
+                  >
+                    {fixedStatusOptions.map(opt => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                  </select>
+                  {isClosed && (
+                    <div style={{ color: 'red', fontSize: '0.8em' }}>
+                      Замовлення закрите
+                    </div>
+                  )}
+                </td>
+                <td>
+                  <strong>ПІБ:</strong> {name}<br />
+                  <strong>Телефон:</strong> {phone}<br />
+                  <strong>Email:</strong> {email}<br />
+                  <strong>Адреса:</strong> {address}
+                </td>
+                <td>
+                  {isClosed && (
+                    <button onClick={() => reopenOrder(_id)}>Відкрити (адмін)</button>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+          {!filtered.length && (
             <tr>
-              <th>ID</th>
-              <th>Ім'я клієнта</th>
-              <th>Сума</th>
-              <th>Статус</th>
-              <th>Змінити статус</th>
+              <td colSpan="5" style={{ textAlign: 'center', padding: '1rem' }}>
+                Нічого не знайдено
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {filteredOrders.map(o => (
-              <React.Fragment key={o.id}>
-                <tr>
-                  <td>{o.id}</td>
-                  <td>{o.customerName}</td>
-                  <td>{o.total} грн</td>
-                  <td>{o.status}</td>
-                  <td>
-                    <select
-                      value={o.status}
-                      onChange={e => updateStatus(o.id, e.target.value)}
-                    >
-                      <option value="Нове">Нове</option>
-                      <option value="У процесі">У процесі</option>
-                      <option value="Відправлено">Відправлено</option>
-                      <option value="Закрито">Закрито</option>
-                    </select>
-                  </td>
-                </tr>
-                <tr>
-                  <td colSpan="5">
-                    <div>
-                      <strong>Нотатка:</strong>
-                      <input
-                        type="text"
-                        defaultValue={o.note || ''}
-                        placeholder="Нотатка менеджера"
-                        onBlur={e => updateNote(o.id, e.target.value)}
-                        style={{ width: '100%' }}
-                      />
-                    </div>
-                    <div>
-                      <strong>Коментарі:</strong>
-                      <ul>
-                        {(o.comments || []).map(c => (
-                          <li key={c.id}><strong>{c.author}:</strong> {c.text}</li>
-                        ))}
-                      </ul>
-                      <input
-                        type="text"
-                        placeholder="Додати коментар і натиснути Enter"
-                        onKeyDown={e => {
-                          if (e.key === 'Enter' && e.target.value.trim()) {
-                            addComment(o.id, e.target.value.trim());
-                            e.target.value = '';
-                          }
-                        }}
-                        style={{ width: '100%' }}
-                      />
-                    </div>
-                  </td>
-                </tr>
-              </React.Fragment>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>Немає замовлень за обраним фільтром.</p>
-      )}
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };

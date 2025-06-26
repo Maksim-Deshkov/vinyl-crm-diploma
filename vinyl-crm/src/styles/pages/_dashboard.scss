@@ -1,0 +1,201 @@
+.dashboard {
+  padding: 2rem;
+  background: $bg-color;
+  color: $text-color;
+  font-family: 'Segoe UI', sans-serif;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    color: $primary-color;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  .dashboard-empty {
+  color: #7c6fa3;
+  text-align: center;
+  padding: 24px 8px 14px 8px;
+  font-size: 1.1rem;
+  background: #f6f3ff;
+  border-radius: 9px;
+  margin: 0 auto;
+}
+
+  // Сітка класичних карт
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-auto-rows: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+ 
+
+  .card {
+    background: $card-bg;
+    border-radius: $border-radius;
+    box-shadow: $box-shadow;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    justify-content: flex-start;
+
+    h3 {
+      margin-bottom: 1rem;
+      color: $primary-color;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    p, ul {
+      font-size: 0.95rem;
+      line-height: 1.4;
+      margin: 0.5rem 0;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+
+      li {
+        margin-bottom: 0.5rem;
+        &::before {
+          content: '•';
+          color: $accent-color;
+          display: inline-block;
+          width: 1em;
+        }
+      }
+    }
+
+    .chart-wrapper {
+      flex: 1;
+      min-height: 200px;
+      margin-top: 1rem;
+    }
+  }
+
+  .dashboard-sales     { @extend .card; }
+  .dashboard-orders    { @extend .card; }
+  .dashboard-top-vinyls{ @extend .card; }
+  .dashboard-clients   { @extend .card; }
+  .dashboard-catalog   { @extend .card; }
+
+  // ===== Аналітичний конструктор =====
+
+  .dashboard-analytics {
+    .analytics-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      h3 {
+        margin: 0;
+        color: #5a4e8c;
+        font-size: 1.5rem;
+      }
+
+      .add-analytics {
+        background: #82ca9d;
+        color: #fff;
+        border: none;
+        font-size: 1.5rem;
+        width: 2.2rem;
+        height: 2.2rem;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &:hover {
+          background: darken(#82ca9d, 5%);
+        }
+      }
+    }
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1rem;
+    }
+
+    .analytics-panel {
+      padding: 1rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        strong {
+          font-size: 1rem;
+        }
+
+        button.remove-analytics {
+          background: transparent;
+          border: none;
+          font-size: 1.2rem;
+          cursor: pointer;
+          color: #999;
+
+          &:hover {
+            color: #333;
+          }
+        }
+      }
+
+      .panel-controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.5rem;
+
+        select, input[type="date"] {
+          padding: 0.4rem;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          font-size: 0.9rem;
+        }
+
+        .date-range {
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+
+          span {
+            font-size: 1.2rem;
+            color: #666;
+          }
+        }
+      }
+
+      .chart-wrapper {
+        flex: 1;
+        min-height: 180px;
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 1rem;
+
+    .dashboard-grid, .analytics-grid {
+      grid-template-columns: 1fr;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+}

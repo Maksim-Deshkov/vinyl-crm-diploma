@@ -1,0 +1,218 @@
+
+
+.vinyl-modal {
+  .modal-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(0,0,0,0.6) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 2000 !important;
+  }
+
+  .modal-content {
+    background: $card-bg !important;
+    width: 100% !important;
+    max-width: 380px !important;
+    padding: 1rem 1.25rem !important;
+    border-radius: $border-radius !important;
+    box-shadow: $box-shadow !important;
+    color: $text-color !important;
+    font-family: 'Segoe UI', sans-serif !important;
+
+    h3 {
+      margin: 0 0 0.75rem !important;
+      font-size: 1.6rem !important;
+      font-weight: 600 !important;
+      text-align: center !important;
+      color: $text-color !important;
+    }
+
+    form {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 0.75rem !important;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="file"] {
+      width: 100% !important;
+      padding: 0.5rem !important;
+      border: 1px solid $input-border !important;
+      border-radius: 4px !important;
+      background: #fff !important;
+      font-size: 0.95rem !important;
+      transition: border-color 0.2s ease !important;
+
+      &:focus {
+        outline: none !important;
+        border-color: $input-focus-border !important;
+      }
+    }
+
+    .image-preview {
+      width: 100% !important;
+      text-align: center !important;
+      margin-top: -0.5rem !important;
+
+      img {
+        max-width: 100% !important;
+        max-height: 150px !important;
+        border-radius: 4px !important;
+        border: 1px solid $input-border !important;
+        object-fit: contain !important;
+      }
+    }
+
+    .modal-buttons {
+      display: flex !important;
+      gap: 0.5rem !important;
+      margin-top: 0.75rem !important;
+
+      button {
+        flex: 1 !important;
+        padding: 0.6rem 0 !important;
+        font-size: 1rem !important;
+        border: none !important;
+        border-radius: 4px !important;
+        color: #fff !important;
+        cursor: pointer !important;
+        transition: opacity 0.2s ease !important;
+
+        &:hover {
+          opacity: 0.9 !important;
+        }
+      }
+
+      .btn-save {
+        background: $secondary-color !important;
+      }
+
+      .btn-cancel {
+        background: $accent-color !important;
+      }
+    }
+  }
+
+  @media (max-width: 400px) {
+    .modal-content {
+      padding: 0.75rem 1rem !important;
+    }
+  }
+}
+
+.dashboard-analytics {
+    margin-top: 2rem;
+
+    .analytics-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      h3 {
+        margin: 0;
+        color: $primary-color;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      .add-analytics {
+        background: $secondary-color;
+        border: none;
+        color: #fff;
+        font-size: 1.25rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      }
+    }
+
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .analytics-panel {
+      display: flex;
+      flex-direction: column;
+      background: $card-bg;
+      border-radius: $border-radius;
+      box-shadow: $box-shadow;
+      overflow: hidden;
+
+      .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: lighten($primary-color, 40%);
+
+        strong {
+          font-size: 1rem;
+          color: $text-color;
+        }
+        button.remove-analytics {
+          background: transparent;
+          border: none;
+          font-size: 1.2rem;
+          cursor: pointer;
+          color: $text-color;
+        }
+      }
+
+      .panel-controls {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+
+        select,
+        input[type="date"] {
+          width: 100%;
+          padding: 0.5rem;
+          border: 1px solid $input-border;
+          border-radius: 4px;
+          font-size: 0.9rem;
+          transition: border-color 0.2s ease;
+
+          &:focus {
+            outline: none;
+            border-color: $input-focus-border;
+          }
+        }
+
+        .date-range {
+          grid-column: span 3;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+
+          input[type="date"] {
+            flex: 1;
+          }
+
+          span {
+            font-size: 1rem;
+            color: $text-color;
+          }
+        }
+      }
+
+      .chart-wrapper {
+        flex: 1;
+        min-height: 220px;
+        padding: 0 1rem 1rem;
+      }
+    }
+  }
+
+

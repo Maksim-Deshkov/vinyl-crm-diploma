@@ -1,36 +1,108 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import ReviewList from '../components/ReviewList';
-import ReviewForm from '../components/ReviewForm';
+import api from '../services/api';
 
 const VinylDetails = () => {
   const { id } = useParams();
   const [vinyl, setVinyl] = useState(null);
-  const [reloadReviews, setReloadReviews] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState({ text: '', rating: 5 });
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/vinyls/${id}`)
+    api.get(`/vinyls/${id}`)
       .then(res => setVinyl(res.data))
-      .catch(err => console.error(err));
+      .catch(console.error);
+
+    api.get(`/reviews?vinylId=${id}`)
+      .then(res => setComments(res.data))
+      .catch(console.error);
   }, [id]);
 
-  const refreshReviews = () => setReloadReviews(prev => !prev);
+  const handleAddComment = async () => {
+    if (!newComment.text.trim()) return;
+    try {
+      // Отримуємо поточного користувача з localStorage
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user || !user._id) {
+        alert('Потрібно увійти для додавання відгуку.');
+        return;
+      }
 
-  if (!vinyl) return <p>Завантаження...</p>;
+      const res = await api.post('/reviews', { 
+        vinylId: id, 
+        userId: user._id,
+        text: newComment.text, 
+        rating: newComment.rating 
+      });
+
+      setComments(prev => [...prev, res.data]);
+      setNewComment({ text: '', rating: 5 });
+    } catch (err) {
+      console.error('Помилка додавання коментаря', err);
+    }
+  };
+
+  if (!vinyl) {
+    return <div className="vinyl-details">Завантаження...</div>;
+  }
+
+  const averageRating = comments.length
+    ? (comments.reduce((sum, c) => sum + c.rating, 0) / comments.length).toFixed(1)
+    : '—';
 
   return (
-    <div>
-      <h2>{vinyl.title}</h2>
-      <img src={vinyl.cover} alt={vinyl.title} style={{ width: '300px' }} />
-      <p>Виконавець: {vinyl.artist}</p>
-      <p>Жанр: {vinyl.genre}</p>
-      <p>Ціна: {vinyl.price} грн</p>
-      <p>Опис: {vinyl.description}</p>
-      <button>Додати до кошика</button>
+    <div className="vinyl-details">
+      <div className="vinyl-info">
+        <img
+          src={vinyl.cover ? `${api.defaults.baseURL.replace(/\/api\/?$/, '')}/uploads/${vinyl.cover}` : '/default-cover.png'}
+          alt={vinyl.title}
+        />
+        <div className="vinyl-data">
+          <h2>{vinyl.title}</h2>
+          <p className="artist">{vinyl.artist}</p>
+          <p className="price">{vinyl.price} грн</p>
+          <p className="desc">{vinyl.description || 'Немає опису.'}</p>
+          <p className="stats">Оцінка: {averageRating} / 5.0</p>
+          <p className="stats">Кількість покупок: {vinyl.soldCount ?? '—'}</p>
+        </div>
+      </div>
+      <div className="vinyl-comments">
+        <h3>Відгуки</h3>
+        {comments.length === 0 ? (
+          <p>Відгуків поки немає.</p>
+        ) : (
+          <ul>
+            {comments.map(c => (
+              <li key={c._id}>
+                <p>
+                  <strong>{c.userId?.name || 'Користувач'}</strong> ({c.rating}/5)
+                </p>
+                <p>{c.text}</p>
+              </li>
+            ))}
+          </ul>
+        )}
 
-      <ReviewList key={reloadReviews} vinylId={vinyl.id} />
-      <ReviewForm vinylId={vinyl.id} onReviewAdded={refreshReviews} />
+        <div className="comment-form">
+          <textarea 
+            value={newComment.text}
+            onChange={e => setNewComment({ ...newComment, text: e.target.value })}
+            placeholder="Ваш відгук..."
+          />
+          <div className="rating-control">
+            <label>Оцінка:</label>
+            <select
+              value={newComment.rating}
+              onChange={e => setNewComment({ ...newComment, rating: +e.target.value })}
+            >
+              {[5,4,3,2,1].map(n => (
+                <option key={n} value={n}>{n}</option>
+              ))}
+            </select>
+          </div>
+          <button onClick={handleAddComment}>Додати відгук</button>
+        </div>
+      </div>
     </div>
   );
 };

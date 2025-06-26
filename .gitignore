@@ -6,6 +6,11 @@ vinyl-crm/node_modules/
 vinyl-crm/build/
 vinyl-crm/coverage/
 
+
+vinyl-backend/node_modules/
+vinyl-backend/build/
+vinyl-backend/coverage/
+
 # env files
 vinyl-public/.env*
 vinyl-crm/.env*

@@ -1,0 +1,144 @@
+.cart-page {
+  max-width: 650px;
+  margin: 2.5rem auto 2rem auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(60,46,120,0.07);
+  padding: 2rem;
+
+  h2 {
+    font-size: 1.6rem;
+    color: #7d5bf0;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .cart-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .cart-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1.2rem;
+
+    .cart-img img {
+      width: 90px;   // збільшив з 62px
+      height: 90px;  // збільшив з 62px
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid #eee;
+      transition: transform 0.2s;
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+
+    .cart-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      .cart-title {
+        font-weight: 500;
+        font-size: 1.1rem;
+
+        .artist {
+          color: #6c6b8c;
+          margin-left: 7px;
+          font-weight: 400;
+        }
+      }
+
+      .cart-price {
+        color: #725cff;
+        font-size: 1.06rem;
+        margin-top: 2px;
+      }
+
+      .cart-controls {
+        margin-top: 7px;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+
+        input[type="number"] {
+          width: 52px;
+          padding: 0.38rem 0.2rem;
+          border-radius: 4px;
+          border: 1px solid #ccc;
+          font-size: 1rem;
+        }
+
+        button {
+          background: #f44336;
+          color: #fff;
+          border: none;
+          border-radius: 4px;
+          font-size: 1.1rem;
+          padding: 0.2rem 0.5rem;
+          cursor: pointer;
+          transition: background 0.2s;
+          &:hover { background: #d32f2f; }
+        }
+      }
+    }
+  }
+
+  .cart-summary {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1.2rem;
+    font-size: 1.12rem;
+
+    .cart-actions {
+      display: flex;
+      gap: 1rem;
+
+      button {
+        padding: 0.7rem 1.6rem;
+        border-radius: 7px;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+
+        &.checkout-btn {
+          background: #7d5bf0;
+          color: #fff;
+        }
+
+        &.clear-btn {
+          background: #e0e0ea;
+          color: #555;
+        }
+      }
+    }
+  }
+
+  .empty {
+    color: #aaa;
+    text-align: center;
+    padding: 2.5rem 0;
+    font-size: 1.12rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .cart-page {
+    padding: 0.7rem;
+
+    .cart-item {
+      .cart-img img {
+        width: 70px;
+        height: 70px;
+      }
+    }
+  }
+}

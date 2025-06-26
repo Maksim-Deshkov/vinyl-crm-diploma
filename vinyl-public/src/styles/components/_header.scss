@@ -1,0 +1,84 @@
+// src/components/Header.scss
+$header-bg: #2c2c2c;
+$header-text: #ffffff;
+$header-accent: #8a2be2;
+$header-padding: 1rem 2rem;
+
+.header {
+  background-color: $header-bg;
+  color: $header-text;
+  padding: $header-padding;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      a {
+        color: $header-text;
+        text-decoration: none;
+        &:hover {
+          color: $header-accent;
+        }
+      }
+    }
+
+    .nav-desktop {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+
+      a,
+      .btn {
+        color: $header-text;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1rem;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: $header-accent;
+        }
+      }
+
+      .btn {
+        background: transparent;
+        border: 1px solid $header-text;
+        padding: 0.4rem 0.8rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        &:hover {
+          background: $header-accent;
+          border-color: $header-accent;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  // Mobile responsiveness
+  @media (max-width: 768px) {
+    .header-container {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0.5rem $header-padding;
+
+      .nav-desktop {
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 0.5rem;
+      }
+    }
+  }
+}

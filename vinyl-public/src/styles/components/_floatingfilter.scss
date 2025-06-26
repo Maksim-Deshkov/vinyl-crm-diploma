@@ -1,0 +1,41 @@
+.floating-filter {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: #f3e6ff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  width: 250px;
+  transition: all 0.3s ease;
+}
+
+.floating-filter.hidden .filter-content {
+  display: none;
+}
+
+.floating-filter .toggle-button {
+  background: #8000ff;
+  color: #fff;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+.floating-filter label {
+  display: block;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.floating-filter input {
+  width: 100%;
+  padding: 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  box-sizing: border-box;
+}

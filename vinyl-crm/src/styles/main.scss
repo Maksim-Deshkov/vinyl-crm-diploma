@@ -1,0 +1,139 @@
+
+// main.scss
+@import "base/_variables.scss";
+
+@import "pages/_dashboard.scss";
+@import "pages/_orders.scss";
+@import "pages/_admin.scss";
+@import "pages/_login.scss";
+@import "pages/_users.scss";
+@import "pages/_moderatereviews.scss";
+@import "pages/_vinyls.scss";
+
+@import "components/_addusermodal.scss";
+@import "components/vinylmodal.scss";
+@import "components/_analytical_builder.scss";
+// Підключення змінних
+
+// Базові стилі для body
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+// ---------------------------------------
+// Body & Container
+// ---------------------------------------
+body {
+  margin: 0;
+  padding: 0;
+  background: $bg-color;
+  color: $text-color;
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+// ---------------------------------------
+// Typography
+// ---------------------------------------
+h1, h2, h3, h4, h5, h6 {
+  color: $primary-color;
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+p {
+  margin: 0 0 1rem;
+}
+
+// ---------------------------------------
+// Tables
+// ---------------------------------------
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  text-align: left;
+  font-size: 0.95rem;
+}
+th {
+  background: lighten($primary-color, 40%);
+  color: darken($primary-color, 10%);
+}
+.responsive-table {
+  overflow-x: auto;
+}
+
+// ---------------------------------------
+// Form Elements
+// ---------------------------------------
+input, select, textarea {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.5rem;
+  border: 1px solid $input-border;
+  border-radius: 4px;
+  transition: border-color 0.2s ease;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: $input-focus-border;
+}
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+button:hover {
+  opacity: 0.9;
+}
+
+// ---------------------------------------
+// Utility Classes
+// ---------------------------------------
+.mt-1 { margin-top: 1rem !important; }
+.mb-1 { margin-bottom: 1rem !important; }
+.p-1  { padding: 1rem !important; }
+.text-center { text-align: center !important; }
+
+// ---------------------------------------
+// Custom Scrollbar (Desktop)
+// ---------------------------------------
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+// ---------------------------------------
+// Responsive Adjustments
+// ---------------------------------------
+// =======================================
+@media (max-width: 600px) {
+  .dashboard {
+    padding: 1rem;
+
+    .dashboard-grid,
+    .analytics-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

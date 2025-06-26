@@ -1,0 +1,90 @@
+.moderate-reviews {
+  padding: 2rem 1rem 1rem 1rem;
+  background: #fcfbff;
+  color: #252144;
+  font-family: 'Segoe UI', sans-serif;
+  h2 {
+    margin-bottom: 1.2rem;
+    color: #5a4e8c;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .mod-rev-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    input {
+      flex: 1;
+      border: 1px solid #c8c5e3;
+      border-radius: 6px;
+      padding: 0.45rem 0.9rem;
+      font-size: 1rem;
+      background: #fff;
+      transition: border-color 0.2s;
+      &:focus { border-color: #5a4e8c; }
+    }
+    span { font-size: 0.99rem; color: #9a93be; }
+  }
+  .mod-rev-table-wrapper {
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(90,78,140,0.07);
+  }
+  .mod-rev-table {
+    width: 100%;
+    border-collapse: collapse;
+    th, td {
+      padding: 0.57rem 0.55rem;
+      border-bottom: 1px solid #eceaf6;
+      font-size: 0.98rem;
+    }
+    th {
+      background: #f2f1fa;
+      font-weight: 600;
+      color: #5a4e8c;
+      text-align: left;
+    }
+    tr:last-child td { border-bottom: none; }
+    .rev-text {
+      max-width: 320px;
+      white-space: pre-line;
+      word-break: break-word;
+    }
+    .rev-rating {
+      display: inline-block;
+      min-width: 32px;
+      padding: 0.13em 0.8em;
+      background: #ffd97e;
+      color: #533;
+      border-radius: 15px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-align: center;
+    }
+    .btn-delete {
+      background: #f44336;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 0.37rem 0.9rem;
+      cursor: pointer;
+      font-size: 0.96rem;
+      font-weight: 500;
+      transition: background 0.15s;
+      &:hover { background: #c93122; }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .moderate-reviews {
+    padding: 0.8rem 0.2rem;
+    h2 { font-size: 1.2rem; }
+    .mod-rev-table th, .mod-rev-table td { font-size: 0.89rem; padding: 0.32rem 0.23rem; }
+    .mod-rev-controls { flex-direction: column; gap: 0.6rem; }
+    .rev-text { max-width: 140px; }
+  }
+}

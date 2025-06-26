@@ -1,0 +1,187 @@
+// 🎨 Змінні кольорів (пастель)
+$primary-color: #dbc3b4;      // м'який пурпурний
+$primary-hover: #b5a383;      // темніший пурпурний
+$accent-color: #f4a261;       // ніжний пудровий
+$highlight-color: #ffcad4;    // ніжний рожевий
+$background-color: #faeeee;   // світлий бежевий фон
+$text-color: #333;            // основний текст
+$white: #fff;
+$border-color: #e0e0e0;       // легкий сіруватий бордер
+$input-border: #ccc;
+
+// Загальні стилі
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: $background-color;
+  color: $text-color;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  padding: 2rem;
+}
+
+footer {
+  background: $primary-color;
+  color: $white;
+  text-align: center;
+  padding: 1rem;
+  border-top: 1px solid $border-color;
+}
+
+// Посилання
+a {
+  text-decoration: none;
+  color: $primary-color;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $accent-color;
+  }
+}
+
+h1, h2, h3 {
+  color: $text-color;
+  font-weight: 500;
+}
+
+// Header
+.header {
+  background: $primary-color;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid $border-color;
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    a {
+      text-decoration: none;
+      font-weight: bold;
+      color: $text-color;
+      font-size: 1.2rem;
+    }
+  }
+
+  .nav-desktop {
+    display: flex;
+    gap: 1.5rem;
+
+    a {
+      text-decoration: none;
+      color: $white;
+      font-weight: 500;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: $highlight-color;
+      }
+    }
+  }
+}
+
+// Кнопки
+button {
+  background: $primary-color;
+  color: $white;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  margin: 0.3rem 0;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: $primary-hover;
+  }
+}
+
+// Форми
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select {
+  padding: 0.6rem;
+  border: 1px solid $input-border;
+  border-radius: 6px;
+  margin-bottom: 0.7rem;
+  width: 100%;
+  box-sizing: border-box;
+  background: $white;
+}
+
+// Таблиці
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: $white;
+  margin-top: 1rem;
+  border-radius: 6px;
+  overflow: hidden;
+
+  th, td {
+    padding: 0.8rem;
+    border: 1px solid $border-color;
+    text-align: left;
+  }
+
+  th {
+    background: $primary-color;
+    color: $white;
+    font-weight: 500;
+  }
+}
+
+// Карточки товарів і корзина
+.cart-item,
+.vinyl-card {
+  background: $white;
+  padding: 1rem;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.vinyl-card {
+  width: 220px;
+
+  img {
+    max-width: 100%;
+    display: block;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+  }
+}
+
+// Каталог
+.vinyl-catalog {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+// Адаптивність
+@media (max-width: 768px) {
+  .nav-desktop {
+    display: block;
+  }
+
+  .vinyl-card {
+    width: 100%;
+  }
+}
+

@@ -1,0 +1,31 @@
+
+// main.scss
+@import "base/reset";
+@import "base/variables";
+@import "base/mixins";
+@import "base/typography";
+
+@import "components/header";
+@import "components/footer";
+
+@import "components/button";
+@import "components/form";
+@import "components/cart";
+@import 'components/floatingfilter.scss';
+@import 'components/_hitcarousel.scss';
+
+@import 'pages/_checkout';
+@import "pages/vinyldetails";
+@import "pages/home";
+@import "pages/catalog";
+@import "pages/profile";
+@import "pages/login";
+@import 'pages/cartpage.scss';
+
+body {
+  font-family: $font-main;
+  color: $color-text;
+  background: $color-beige;
+  margin: 0;
+  padding: 0;
+}

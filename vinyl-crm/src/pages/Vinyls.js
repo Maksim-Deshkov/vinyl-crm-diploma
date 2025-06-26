@@ -1,89 +1,147 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../services/api';
+import VinylModal from '../components/VinylModal';
+import VinylTable from '../components/VinylTable';
 
 const Vinyls = () => {
   const [vinyls, setVinyls] = useState([]);
-  const [form, setForm] = useState({ title: '', artist: '', price: '', genre: '' });
+  const [filteredVinyls, setFilteredVinyls] = useState([]);
+
+  const [titleFilter, setTitleFilter] = useState('');
+  const [artistFilter, setArtistFilter] = useState('');
+  const [genreFilter, setGenreFilter] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingVinyl, setEditingVinyl] = useState(null);
 
   useEffect(() => {
     loadVinyls();
   }, []);
 
+  useEffect(() => {
+    applyFilters();
+  }, [vinyls, titleFilter, artistFilter, genreFilter, minPrice, maxPrice]);
+
   const loadVinyls = () => {
-    axios.get('http://localhost:3001/vinyls')
-      .then(res => setVinyls(res.data))
-      .catch(err => console.error(err));
+    api.get('/vinyls')
+      .then(res => {
+        setVinyls(res.data);
+        setFilteredVinyls(res.data);
+      })
+      .catch(err => console.error('Помилка завантаження платівок:', err));
   };
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const applyFilters = () => {
+    let filtered = [...vinyls];
+
+    if (titleFilter) {
+      filtered = filtered.filter(v =>
+        v.title.toLowerCase().includes(titleFilter.toLowerCase())
+      );
+    }
+
+    if (artistFilter) {
+      filtered = filtered.filter(v =>
+        v.artist.toLowerCase().includes(artistFilter.toLowerCase())
+      );
+    }
+
+    if (genreFilter) {
+      filtered = filtered.filter(v =>
+        v.genre.toLowerCase().includes(genreFilter.toLowerCase())
+      );
+    }
+
+    if (minPrice) {
+      filtered = filtered.filter(v => v.price >= parseFloat(minPrice));
+    }
+
+    if (maxPrice) {
+      filtered = filtered.filter(v => v.price <= parseFloat(maxPrice));
+    }
+
+    setFilteredVinyls(filtered);
   };
 
-  const saveVinyl = (e) => {
-    e.preventDefault();
-    if (form.id) {
-      axios.put(`http://localhost:3001/vinyls/${form.id}`, form)
-        .then(() => {
-          loadVinyls();
-          setForm({ title: '', artist: '', price: '', genre: '' });
-        });
-    } else {
-      axios.post(`http://localhost:3001/vinyls`, form)
-        .then(() => {
-          loadVinyls();
-          setForm({ title: '', artist: '', price: '', genre: '' });
-        });
+  const handleDelete = (id) => {
+    if (window.confirm('Видалити цю платівку?')) {
+      api.delete(`/vinyls/${id}`)
+        .then(loadVinyls)
+        .catch(err => alert('Помилка видалення платівки'));
     }
   };
 
-  const editVinyl = (vinyl) => {
-    setForm(vinyl);
+  const handleEdit = (vinyl) => {
+    setEditingVinyl(vinyl);
+    setModalOpen(true);
   };
 
-  const deleteVinyl = (id) => {
-    axios.delete(`http://localhost:3001/vinyls/${id}`)
-      .then(() => loadVinyls());
+  const handleAdd = () => {
+    setEditingVinyl(null);
+    setModalOpen(true);
+  };
+
+  const handleModalClose = (refresh) => {
+    setModalOpen(false);
+    setEditingVinyl(null);
+    if (refresh) loadVinyls();
   };
 
   return (
-    <div>
+    <div className="vinyls_container">
       <h2>Каталог платівок</h2>
 
-      <form onSubmit={saveVinyl}>
-        <input name="title" placeholder="Назва" value={form.title} onChange={handleChange} />
-        <input name="artist" placeholder="Виконавець" value={form.artist} onChange={handleChange} />
-        <input name="genre" placeholder="Жанр" value={form.genre} onChange={handleChange} />
-        <input name="price" type="number" placeholder="Ціна" value={form.price} onChange={handleChange} />
-        <button type="submit">{form.id ? 'Оновити' : 'Додати'}</button>
-      </form>
+      <div className="filters">
+        <input
+          type="text"
+          placeholder="Назва"
+          value={titleFilter}
+          onChange={e => setTitleFilter(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Виконавець"
+          value={artistFilter}
+          onChange={e => setArtistFilter(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Жанр"
+          value={genreFilter}
+          onChange={e => setGenreFilter(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Ціна від"
+          value={minPrice}
+          onChange={e => setMinPrice(e.target.value)}
+        />
+        <input
+          type="number"
+          placeholder="Ціна до"
+          value={maxPrice}
+          onChange={e => setMaxPrice(e.target.value)}
+        />
+      </div>
 
-      <table border="1" cellPadding="5">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Назва</th>
-            <th>Виконавець</th>
-            <th>Жанр</th>
-            <th>Ціна</th>
-            <th>Дії</th>
-          </tr>
-        </thead>
-        <tbody>
-          {vinyls.map(v => (
-            <tr key={v.id}>
-              <td>{v.id}</td>
-              <td>{v.title}</td>
-              <td>{v.artist}</td>
-              <td>{v.genre}</td>
-              <td>{v.price}</td>
-              <td>
-                <button onClick={() => editVinyl(v)}>Редагувати</button>
-                <button onClick={() => deleteVinyl(v.id)}>Видалити</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <button className="btn-add" onClick={handleAdd}>Додати платівку</button>
+
+      <VinylTable
+        vinyls={filteredVinyls}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        showId={true}
+        showStock={true}
+      />
+
+      {modalOpen && (
+        <VinylModal
+          vinyl={editingVinyl}
+          onClose={handleModalClose}
+        />
+      )}
     </div>
   );
 };

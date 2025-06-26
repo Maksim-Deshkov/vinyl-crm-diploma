@@ -1,0 +1,96 @@
+.login-container {
+  max-width: 340px;
+  margin: 80px auto 0;
+  padding: 32px 28px 26px 28px;
+  background: #181827;
+  border-radius: 24px;
+  box-shadow: 0 6px 24px 0 rgba(33, 23, 55, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h2 {
+    color: #e0e0f0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 28px;
+    letter-spacing: 1px;
+  }
+
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  input[type="email"],
+  input[type="password"] {
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1.5px solid #342956;
+    background: #23233a;
+    color: #d8d7ec;
+    font-size: 1.08rem;
+    transition: border 0.2s;
+    &:focus {
+      outline: none;
+      border-color: #8465e3;
+      background: #262747;
+    }
+  }
+
+  .error {
+    color: #ff455e;
+    background: #ffe2e7;
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    font-size: 0.98rem;
+    text-align: center;
+  }
+  .info {
+    color: #309065;
+    background: #e1f7ed;
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    font-size: 0.98rem;
+    text-align: center;
+  }
+
+  button[type="submit"], .restore-btn {
+    margin-top: 4px;
+    background: linear-gradient(94deg, #8663ea 0%, #7032d5 100%);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.07rem;
+    border: none;
+    padding: 11px 0;
+    border-radius: 11px;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 12px 0 rgba(120,90,200,0.10);
+
+    &:hover {
+      background: linear-gradient(94deg, #a089ff 0%, #8548f7 100%);
+    }
+  }
+
+  .restore-btn, .back-btn {
+    background: transparent;
+    color: #b3a2ff;
+    font-size: 0.98rem;
+    margin-top: 0;
+    margin-left: 6px;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0;
+    &:hover {
+      color: #d2beff;
+      background: transparent;
+    }
+  }
+}

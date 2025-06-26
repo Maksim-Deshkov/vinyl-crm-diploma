@@ -1,0 +1,128 @@
+
+.admin-panel {
+  padding: 1.5rem;
+  background: $card-bg;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  color: $text-color;
+  font-family: 'Segoe UI', sans-serif;
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    label {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    select {
+      padding: 0.5rem;
+      border: 1px solid $input-border;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s ease;
+
+      &:focus {
+        outline: none;
+        border-color: $input-focus-border;
+      }
+    }
+
+    .add-admin-btn {
+      padding: 0.5rem 1rem;
+      background: $secondary-color;
+      color: #fff;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      border: none;
+      transition: background 0.2s ease, opacity 0.2s ease;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    thead {
+      background: lighten($primary-color, 40%);
+
+      th {
+        padding: 0.75rem 1rem;
+        color: darken($primary-color, 10%);
+        font-weight: 600;
+      }
+    }
+
+    tbody {
+      tr {
+        &:nth-child(even) {
+          background: #f9f9f9;
+        }
+
+        &.frozen {
+          background-color: #ffe5e5;
+
+          td {
+            color: #c00;
+          }
+        }
+
+        &:hover {
+          background: lighten($secondary-color, 50%);
+        }
+      }
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 0.75rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    td {
+      .status {
+        &.active {
+          color: $secondary-color;
+          font-weight: 600;
+        }
+        &.frozen {
+          color: #c00;
+          font-weight: 600;
+        }
+      }
+    }
+
+    button {
+      padding: 0.4rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+
+      &.btn-freeze {
+        background: $accent-color;
+        color: #fff;
+        margin-right: 0.5rem;
+      }
+
+      &.delete-btn {
+        background: #f44336;
+        color: #fff;
+      }
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+}
